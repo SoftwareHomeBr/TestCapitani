@@ -1,0 +1,68 @@
+﻿@model IEnumerable<CatalogoDomain.PessoaModel>
+
+<p>
+    <a asp-action="PessoaCreate">Nova Pessoa</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PessoaId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstadoCivil)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataNascimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParceiroId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PessoaId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstadoCivil)
+                </td>
+                <td>
+                    @item.DataNascimento.ToString("dd-MMM-yyyy")
+                </td>
+                @if (item.ParceiroId > 0)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.parceiro.Nome) &nbsp;
+                        @item.parceiro.DataNascimento.ToString("dd-MMM-yyyy")
+                    </td>
+                }
+                <td>
+                    @Html.ActionLink("Edit", "PessoaEdit", new { id = item.PessoaId }) |
+                    @Html.ActionLink("Details", "PessoaDetails", new { id = item.PessoaId }) |
+                    @Html.ActionLink("Delete", "PessoaDelete", new { id = item.PessoaId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form asp-action="Pessoas" method="get">
+    <input type="hidden" name="pageNum" value="@ViewBag.currentPage" />
+    <input type="text" name="filtro" value="@ViewBag.filtro" />
+    <input type="submit" name="pagin" value="search" class="btn btn-primary" /> |
+    <input type="submit" name="pagin" value="previous" class="btn btn-primary" /> |
+    <input type="submit" name="pagin" value="next" class="btn btn-primary" /> |
+    <a asp-action="Pessoas">Lista Completa</a>
+</form>
+
