@@ -22,7 +22,10 @@ namespace webAPI.Controllers
             var filtered = Startup.pessoas.Values.Where(p =>
                 filtro == null || p.Nome.Contains(filtro)
             );
-            return filtered.Skip(ct).Take(paginaLen) ;
+            if (pagina != null)
+                return filtered.Skip(ct).Take(paginaLen);
+            else
+                return filtered.Skip(ct);
         }
 
         // GET api/<PessoaController>/5
