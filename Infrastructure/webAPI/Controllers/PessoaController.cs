@@ -20,7 +20,7 @@ namespace webAPI.Controllers
             int paginaLen = 5;
             int ct = (pagina ?? 0) * paginaLen;
             var filtered = Startup.pessoas.Values.Where(p =>
-                filtro == null || p.Nome.Contains(filtro)
+                filtro == null || (p.Nome?.Contains(filtro, StringComparison.CurrentCultureIgnoreCase) ?? false)
             );
             if (pagina != null)
                 return filtered.Skip(ct).Take(paginaLen);
