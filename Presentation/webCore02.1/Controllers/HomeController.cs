@@ -40,6 +40,10 @@ namespace webCore02._1.Controllers
         {
             using (var cli = new HttpClient())
             {
+                if(pageNum == null)
+                {
+                    pageNum = 0;
+                }
                 var resp = cli.GetStringAsync($"https://localhost:44395/api/Pessoa?pagina={pageNum}&filtro={filtro}").Result;
                 var model = JsonConvert.DeserializeObject<List<PessoaModel>>(resp);
 
