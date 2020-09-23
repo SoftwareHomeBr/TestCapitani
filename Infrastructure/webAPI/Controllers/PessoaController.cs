@@ -18,14 +18,18 @@ namespace webAPI.Controllers
         public IEnumerable<PessoaVO> Get([FromQuery] int? pagina, [FromQuery] string filtro)
         {
             int paginaLen = 5;
-            int ct = (pagina ?? 0) * paginaLen;
+            int offset = (pagina ?? 0) * paginaLen;
+            if(offset >= Startup.pessoas.Count)
+            {
+                offset = Startup.pessoas.Count-1;
+            }
             var filtered = Startup.pessoas.Values.Where(p =>
                 filtro == null || (p.Nome?.Contains(filtro, StringComparison.CurrentCultureIgnoreCase) ?? false)
             );
             if (pagina != null)
-                return filtered.Skip(ct).Take(paginaLen);
+                return filtered.Skip(offset).Take(paginaLen);
             else
-                return filtered.Skip(ct);
+                return filtered.Skip(offset);
         }
 
         // GET api/<PessoaController>/5
@@ -57,8 +61,17 @@ namespace webAPI.Controllers
                 var who = Startup.pessoas.Values.ToList().Find(p => p.PessoaId == pessoa.PessoaId);
                 if (who != null)
                 {
+                    if(pessoa.ParceiroId == pessoa.PessoaId)
+                    {
+                        throw new ApplicationException("Casamento Inválido: Mesmo indivíduo");
+                    }
                     Startup.pessoas.Remove(who.PessoaId);
                     Startup.pessoas.Add(pessoa.PessoaId, pessoa);
+                    if (pessoa.ParceiroId > 0)
+                    {
+                        var partner = Startup.pessoas.Values.ToList().Find(p => p.PessoaId == pessoa.ParceiroId);
+                        partner.ParceiroId = pessoa.PessoaId;
+                    }
                 }
             }
         }

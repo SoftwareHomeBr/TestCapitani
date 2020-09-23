@@ -28,7 +28,6 @@
             <div class="form-group">
                 <label  class="control-label">Parceiro</label>
                 @Html.DropDownListFor(m => m.ParceiroId, (IEnumerable<SelectListItem>)ViewBag.lista, "seleciona um")
-                <span asp-validation-for="ParceiroId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

@@ -50,20 +50,17 @@ namespace webCore02._1.Controllers
                 foreach (var p in model)
                 {
                     if(p.ParceiroId >0)
-                        p.parceiro = p.CriaPessoa( PessoaService.GetPessoa(p.ParceiroId));
+                        p.parceiro = p.CriaPessoa( PessoaService.GetPessoa(p.ParceiroId ?? 0));
                 }
 
                 var view = View("PessoaListView", model);
                 ViewBag.fitro = filtro;
-                pageNum = pagin == "search" ? pageNum = 0 : ( pagin == "next" ? pageNum += 1 : pageNum -= 1);
+                pageNum = pagin == "search" ? pageNum = 0 : ( pagin == "next" && model.Count >1 ? pageNum += 1 : pageNum -= 1);
                 if(pageNum == null || pageNum < 0)
                 {
                     pageNum = 0;
                 }
-                else if (pageNum > 4)
-                {
-                    pageNum = 4;
-                }
+                
                 ViewBag.currentPage =  pageNum;
                 return view;
             }
@@ -165,7 +162,7 @@ namespace webCore02._1.Controllers
                 var resp = cli.GetStringAsync("https://localhost:44395/api/Pessoa/" + pessoaId).Result;
                 var model = JsonConvert.DeserializeObject<PessoaModel>(resp);
                 if (model.ParceiroId > 0)
-                    model.parceiro = model.CriaPessoa(PessoaService.GetPessoa(model.ParceiroId));
+                    model.parceiro = model.CriaPessoa(PessoaService.GetPessoa(model.ParceiroId ?? 0));
                 var view = View("PessoaDetailsView", model);
                 return view;
             }

@@ -20,8 +20,10 @@
                 @Html.DisplayNameFor(model => model.DataNascimento)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.parceiro)
-                / Parceiro-nascimento
+                Parceiro
+            </th>
+            <th>
+                Parceiro Nascimento
             </th>
             <th>
             </th>
@@ -31,32 +33,39 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PessoaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstadoCivil)
+            </td>
+            <td>
+                @item.DataNascimento.ToString("dd-MMM-yyyy")
+            </td>
+            @if (item.ParceiroId > 0)
+            {
                 <td>
-                    @Html.DisplayFor(modelItem => item.PessoaId)
+                    @Html.DisplayFor(modelItem => item.parceiro.Nome)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
+                    @item.parceiro.DataNascimento.ToString("dd-MMM-yyyy")
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EstadoCivil)
-                </td>
-                <td>
-                    @item.DataNascimento.ToString("dd-MMM-yyyy")
-                </td>
-                @if (item.ParceiroId > 0)
-                {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.parceiro.Nome) &nbsp;
-                        @item.parceiro.DataNascimento.ToString("dd-MMM-yyyy")
-                    </td>
-                }
-                <td>
-                    @Html.ActionLink("Edit", "PessoaEdit", new { id = item.PessoaId }) |
-                    @Html.ActionLink("Details", "PessoaDetails", new { id = item.PessoaId }) |
-                    @Html.ActionLink("Delete", "PessoaDelete", new { id = item.PessoaId })
-                </td>
-            </tr>
+            }
+            else
+            {
+                <td></td>
+                <td></td>
+            }
+            <td>
+                @Html.ActionLink("Edit", "PessoaEdit", new { id = item.PessoaId }) |
+                @Html.ActionLink("Details", "PessoaDetails", new { id = item.PessoaId }) |
+                @Html.ActionLink("Delete", "PessoaDelete", new { id = item.PessoaId })
+            </td>
+        </tr>
         }
     </tbody>
 </table>

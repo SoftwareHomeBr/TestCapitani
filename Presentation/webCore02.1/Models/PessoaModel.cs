@@ -26,8 +26,8 @@ namespace CatalogoDomain
                 }
             } 
         }
-        private int _parceiroId = 0;
-        public int ParceiroId
+        private int? _parceiroId = 0;
+        public int? ParceiroId
         {
             get
             {
